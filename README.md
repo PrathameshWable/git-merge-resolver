@@ -1,3 +1,18 @@
+---
+title: Git Merge Conflict Resolver
+emoji: 🔀
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+tags:
+  - openenv
+  - developer-tools
+  - code
+  - real-world
+  - git
+---
+
 # Git Merge Conflict Resolver
 
 [![OpenEnv](https://img.shields.io/badge/OpenEnv-Compatible-blue)](https://openenv.dev)
