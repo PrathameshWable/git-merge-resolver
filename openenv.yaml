@@ -1,0 +1,21 @@
+name: git_merge_resolver
+version: "1.0.0"
+description: "Git Merge Conflict Resolver — an OpenEnv environment where AI agents resolve realistic Git merge conflicts across varying difficulty levels"
+spec_version: 1
+client:
+  class_name: GitMergeResolverEnv
+  module: git_merge_resolver.client
+action:
+  class_name: MergeAction
+  module: git_merge_resolver.models
+observation:
+  class_name: MergeObservation
+  module: git_merge_resolver.models
+default_image: git-merge-resolver:latest
+tags:
+  - openenv
+  - developer-tools
+  - code
+  - real-world
+  - git
+  - merge-conflicts
