@@ -986,12 +986,12 @@ def get_task5() -> dict:
     return {
         "task_id": "multi_file_api_overhaul",
         "task_description": (
-            "Resolve a multi-file conflict from a REST API v1→v2 overhaul across "
-            "api/routes.py, api/schemas.py, and tests/test_api.py. Developer A updated "
-            "all endpoints to use /api/v2/ paths, Pydantic response models, and HTTPException "
-            "error handling. Developer B added inventory tracking endpoints and tests using "
-            "v1 patterns. Resolve so the new inventory endpoints follow v2 conventions "
-            "(Pydantic schemas, /api/v2/ paths, HTTPException errors) and tests use v2 paths."
+            "The messiest kind of conflict — a full API overhaul happening at the same time "
+            "as a feature addition. Main branch moved everything to v2: proper Pydantic response "
+            "models, /api/v2/ paths, HTTPException for errors. Feature branch added inventory "
+            "tracking endpoints and tests, but in the old v1 style. Three files need to be "
+            "consistent: routes.py, schemas.py, and the tests. New endpoints need to follow "
+            "the v2 pattern or the whole thing is inconsistent."
         ),
         "difficulty": "hard",
         "conflict_blocks": conflict_blocks,

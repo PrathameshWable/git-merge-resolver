@@ -215,11 +215,11 @@ def get_task1() -> dict:
     return {
         "task_id": "simple_variable_rename",
         "task_description": (
-            "Resolve a variable rename conflict in a financial calculator module. "
-            "Developer A renamed the parameter 'price' to 'cost' throughout the file "
-            "for semantic clarity. Developer B added a new 'calculate_discount' function "
-            "using the old 'price' parameter name. Resolve so that the new function uses "
-            "the canonical 'cost' naming convention."
+            "Classic rename conflict. One person went through the whole calculator module "
+            "and renamed 'price' to 'cost' everywhere — makes sense semantically. Meanwhile "
+            "someone else added a new discount function using the old 'price' name. "
+            "The fix is straightforward: the new function should use 'cost' to match "
+            "the rest of the file."
         ),
         "difficulty": "easy",
         "conflict_blocks": conflict_blocks,
@@ -459,11 +459,10 @@ def get_task2() -> dict:
     return {
         "task_id": "import_and_usage_update",
         "task_description": (
-            "Resolve conflicts in an HTTP client module where one branch migrated "
-            "from 'requests' to 'httpx' for async compatibility, and the other branch "
-            "added a new 'submit_batch_job' method using the old 'requests' API. "
-            "The resolution must keep 'httpx' as the HTTP library and update the new "
-            "method to use 'httpx.post()' instead of 'requests.post()'."
+            "Library migration conflict. One branch swapped out 'requests' for 'httpx' "
+            "across the whole API client — two conflicts, one for the import and one for "
+            "the usage. The other branch added a new 'submit_batch_job' method still using "
+            "the old requests style. Keep httpx, port the new method over."
         ),
         "difficulty": "easy",
         "conflict_blocks": conflict_blocks,

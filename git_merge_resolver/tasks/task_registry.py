@@ -21,7 +21,7 @@ def _build_registry() -> Dict[str, dict]:
     return {task["task_id"]: task for task in tasks}
 
 
-# Module-level registry — built once at import time
+# build once at import, reuse everywhere
 _REGISTRY: Dict[str, dict] = _build_registry()
 
 
@@ -93,3 +93,5 @@ def get_random_task(difficulty: Optional[str] = None) -> dict:
 def get_all_task_ids() -> List[str]:
     """Return a list of all registered task IDs."""
     return list(_REGISTRY.keys())
+
+# TODO: support loading tasks from external YAML files, not just hardcoded Python

@@ -372,12 +372,11 @@ def get_task3() -> dict:
     return {
         "task_id": "function_signature_change",
         "task_description": (
-            "Resolve a function signature conflict in a billing service module. "
-            "Developer A added a required 'tax_rate' parameter to 'calculate_total()' "
-            "and updated related functions to accept tax_rate. Developer B added "
-            "'process_bulk_invoices()' and 'mark_invoices_paid()' using the old "
-            "signature without tax_rate. Resolve so the new signature is used throughout, "
-            "with tax_rate=0.08 as the default where needed."
+            "Someone made tax_rate an explicit parameter in calculate_total() — good change, "
+            "makes the function actually reusable across jurisdictions. But the feature branch "
+            "added bulk invoice processing functions that call the old signature. "
+            "You need to keep the new signature and update the callers. "
+            "tax_rate=0.08 is a reasonable default where one is needed."
         ),
         "difficulty": "medium",
         "conflict_blocks": conflict_blocks,
@@ -748,12 +747,11 @@ def get_task4() -> dict:
     return {
         "task_id": "class_refactor_vs_feature_addition",
         "task_description": (
-            "Resolve conflicts across two files in a user authentication module. "
-            "Developer A extracted password hashing into a dedicated 'PasswordHasher' class "
-            "(hasher.py) and updated UserManager to use it. Developer B added "
-            "'reset_password()' and 'change_password()' methods using the old inline "
-            "PBKDF2 hashing logic. Resolve so the new methods use the PasswordHasher "
-            "abstraction, and models.py retains the 'mfa_enabled' field from the main branch."
+            "Refactoring conflict across two files. The main branch pulled password hashing "
+            "out into a PasswordHasher class — cleaner separation of concerns. The feature "
+            "branch added reset_password() and change_password() but duplicated the old "
+            "inline PBKDF2 logic instead. New methods should use the hasher class. "
+            "Also make sure models.py keeps the mfa_enabled field from main."
         ),
         "difficulty": "medium",
         "conflict_blocks": conflict_blocks,

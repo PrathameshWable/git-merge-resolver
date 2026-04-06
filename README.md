@@ -19,9 +19,24 @@ tags:
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-brightgreen)](https://python.org)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-yellow.svg)](LICENSE)
 
-An **OpenEnv** environment for evaluating AI agent ability to resolve realistic Git merge conflicts across varying difficulty levels.
+## Why I Built This
 
-> **Why this environment?** Git merge conflict resolution is one of the most cognitively demanding tasks in collaborative software development — yet no existing OpenEnv environment covers it. Developers spend 20–30% of their time on integration work; intelligent agents that can resolve conflicts correctly represent a step-change improvement in developer productivity.
+I've lost count of how many times I've sat staring at a `<<<<<<<` marker trying
+to figure out what two people were thinking when they both edited the same file.
+It's one of those things that feels like it should be automatable — you have the
+code, you have the commit messages, you have the context. Can an LLM just figure it out?
+
+That question is what this environment is about. The conflicts here aren't toy
+examples — they're based on patterns I've actually run into: someone renames a
+variable across a whole module while someone else adds a new function using the
+old name, or two people touch the same API layer from completely different angles.
+The hard task (multi-file API overhaul) is the kind of thing that would ruin your afternoon.
+
+No existing OpenEnv environment tests this, so I built one.
+
+---
+
+An **OpenEnv** environment for evaluating AI agent ability to resolve realistic Git merge conflicts across varying difficulty levels.
 
 ---
 

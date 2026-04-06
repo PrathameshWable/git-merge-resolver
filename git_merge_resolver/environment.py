@@ -62,22 +62,15 @@ class _EpisodeSession:
         # Feedback string to include in the next observation
         self.last_feedback: Optional[str] = None
 
-        # Build set of all conflict_ids for quick lookup
         self.all_conflict_ids: List[str] = [
             b.conflict_id for b in task["conflict_blocks"]
         ]
-
-        # Build conflict_id → ConflictBlock map
         self.conflict_map: Dict[str, ConflictBlock] = {
             b.conflict_id: b for b in task["conflict_blocks"]
         }
-
-        # Build conflict_id → file_path map
         self.file_path_map: Dict[str, str] = {
             b.conflict_id: b.file_path for b in task["conflict_blocks"]
         }
-
-        # Build grader
         self.grader = build_grader_for_task(self.task_id)
 
     @property
@@ -122,10 +115,9 @@ class GitMergeResolverEnvironment:
     """
 
     def __init__(self) -> None:
-        # Active sessions keyed by episode_id
         self._sessions: Dict[str, _EpisodeSession] = {}
-        # The "current" session for single-session HTTP usage
         self._current_episode_id: Optional[str] = None
+        # TODO: add session cleanup — old episodes just pile up in memory right now
 
     # ------------------------------------------------------------------
     # Public OpenEnv interface

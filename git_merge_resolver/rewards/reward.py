@@ -26,19 +26,18 @@ from git_merge_resolver.utils.diff_utils import (
     sequence_similarity,
 )
 
-# Reward component weights
+# weights must sum to 1.0
 WEIGHT_MATCH = 0.40
 WEIGHT_SYNTAX = 0.30
 WEIGHT_SEMANTIC = 0.20
 WEIGHT_NO_MARKERS = 0.10
 
-# Penalty amounts
+# penalties
 PENALTY_INVALID_CONFLICT_ID = 0.05
 PENALTY_ALREADY_RESOLVED = 0.02
 PENALTY_EMPTY_RESOLUTION = 0.10
 PENALTY_UNRESOLVED_AT_END = 0.10
 
-# Explanation bonus cap
 EXPLANATION_BONUS_MAX = 0.05
 
 
@@ -199,6 +198,7 @@ def compute_conflict_reward(
 def compute_episode_reward(
     conflict_rewards: List[float],
     penalties: float = 0.0,
+    # TODO: consider weighted average (harder tasks worth more) instead of plain mean
 ) -> float:
     """
     Compute the final episode reward.
