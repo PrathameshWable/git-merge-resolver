@@ -245,3 +245,16 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
 
     except WebSocketDisconnect:
         logger.info("WebSocket connection closed")
+
+
+def main() -> None:
+    """Entry point for the server — callable via project.scripts."""
+    import uvicorn
+    import os
+
+    port = int(os.environ.get("PORT", 7860))
+    uvicorn.run("server.app:app", host="0.0.0.0", port=port, workers=1)
+
+
+if __name__ == "__main__":
+    main()
