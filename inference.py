@@ -32,8 +32,8 @@ from typing import Dict, List, Optional, Tuple
 # Environment variable configuration (MUST be set before running)
 # ---------------------------------------------------------------------------
 API_BASE_URL: str = os.environ.get("API_BASE_URL", "http://localhost:7860")
-MODEL_NAME: str = os.environ.get("MODEL_NAME", "gpt-4o")
-HF_TOKEN: str = os.environ.get("HF_TOKEN", "")
+MODEL_NAME: str = os.environ.get("MODEL_NAME", "your-active-model")
+HF_TOKEN: str = os.environ.get("HF_TOKEN")
 
 # Server base URL for the environment (separate from LLM API)
 ENV_BASE_URL: str = os.environ.get("ENV_BASE_URL", API_BASE_URL)
