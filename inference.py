@@ -5,12 +5,9 @@ Baseline inference script for the Git Merge Conflict Resolver OpenEnv environmen
 Runs an LLM agent against all tasks and logs results in the required format.
 
 Required environment variables:
-    API_BASE_URL  — The base URL for the LLM API endpoint
+    API_BASE_URL  — LiteLLM proxy base URL (injected by validator)
+    API_KEY       — LiteLLM proxy API key (injected by validator)
     MODEL_NAME    — The model identifier to use
-    HF_TOKEN      — HuggingFace / API authentication token
-
-Usage:
-    API_BASE_URL=http://localhost:8000/v1 MODEL_NAME=gpt-4o HF_TOKEN=hf_... python inference.py
 
 Log format (stdout):
     [START] task=<task_name> env=git_merge_resolver model=<model_name>
@@ -29,17 +26,17 @@ import time
 from typing import Dict, List, Optional, Tuple
 
 # ---------------------------------------------------------------------------
-# Environment variable configuration (MUST be set before running)
+# Environment variables — injected by the OpenEnv validator at runtime
 # ---------------------------------------------------------------------------
 API_BASE_URL: str = os.environ.get("API_BASE_URL", "http://localhost:7860")
+API_KEY: str = os.environ.get("API_KEY", "")
 MODEL_NAME: str = os.environ.get("MODEL_NAME", "your-active-model")
-HF_TOKEN: str = os.environ.get("HF_TOKEN")
 
-# Server base URL for the environment (separate from LLM API)
-ENV_BASE_URL: str = os.environ.get("ENV_BASE_URL", API_BASE_URL)
+# HF_TOKEN kept for backwards compat, API_KEY takes priority
+HF_TOKEN: str = os.environ.get("HF_TOKEN", "")
 
-# LLM API base URL (may differ from env URL if LLM is a separate service)
-LLM_API_BASE_URL: str = os.environ.get("LLM_API_BASE_URL", "")
+# Environment server URL (same as API_BASE_URL unless overridden)
+ENV_BASE_URL: str = os.environ.get("ENV_BASE_URL", "http://localhost:7860")
 
 # All tasks to evaluate
 TASKS: List[str] = [
@@ -57,10 +54,10 @@ logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# Lazy imports — only loaded when actually used
+# Client setup
 # ---------------------------------------------------------------------------
 def _get_openai_client():
-    """Create an OpenAI client configured for the LLM API."""
+    """Create an OpenAI client pointed at the LiteLLM proxy."""
     try:
         from openai import OpenAI
     except ImportError:
@@ -68,13 +65,11 @@ def _get_openai_client():
             "openai package not installed. Run: pip install openai"
         )
 
-    # Determine LLM base URL
-    llm_url = LLM_API_BASE_URL or API_BASE_URL
-    if not llm_url.endswith("/v1"):
-        llm_url = llm_url.rstrip("/") + "/v1"
+    # Use API_KEY (injected by validator), fall back to HF_TOKEN
+    api_key = API_KEY or HF_TOKEN or "no-key"
 
-    api_key = HF_TOKEN or "no-key"
-    return OpenAI(base_url=llm_url, api_key=api_key)
+    # Use API_BASE_URL directly — the LiteLLM proxy already handles routing
+    return OpenAI(base_url=API_BASE_URL, api_key=api_key)
 
 
 def _get_env_client():
@@ -84,13 +79,7 @@ def _get_env_client():
     except ImportError:
         raise ImportError("httpx package not installed. Run: pip install httpx")
 
-    # Determine env URL: check if ENV_BASE_URL points to the FastAPI server
-    env_url = ENV_BASE_URL
-    # If API_BASE_URL ends in /v1 it's an LLM endpoint, not our env server
-    if env_url.endswith("/v1"):
-        env_url = "http://localhost:7860"
-
-    return httpx.Client(base_url=env_url, timeout=30.0)
+    return httpx.Client(base_url=ENV_BASE_URL, timeout=30.0)
 
 
 # ---------------------------------------------------------------------------
